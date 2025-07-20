@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogSphere - Share Your Stories</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="white" opacity="0.1"><polygon points="0,0 1000,100 1000,0"/></svg>');
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        .blog-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 100%;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .blog-card img {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .blog-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .category-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 80px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            border-radius: 25px;
+            padding: 10px 20px 10px 50px;
+            /* space for icon */
+            border: 2px solid #e9ecef;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+
+            z-index: 9999 !important;
+            position: relative !important;
+            pointer-events: auto !important;
+
+
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .search-box .fa-search {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            pointer-events: none;
+            font-size: 1rem;
+        }
+
+        .featured-posts {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .post-meta .author-avatar {
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
+            min-height: 40px !important;
+            max-width: 40px !important;
+            max-height: 40px !important;
+            border-radius: 50% !important;
+            object-fit: cover !important;
+            display: inline-block;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            background: #f5f5f5;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            border-radius: 15px;
+        }
+
+        .user-welcome {
+            background: linear-gradient(135deg, var(--success-color), #20c997);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .welcome-actions .btn {
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+
+        .welcome-popup {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--success-color), #20c997);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            z-index: 9999;
+            box-shadow: 0 8px 32px rgba(44, 62, 80, 0.15);
+            opacity: 0;
+            transition: top 0.6s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.4s;
+        }
+
+        .welcome-popup.show {
+            top: 30px;
+            opacity: 1;
+        }
+
+        .welcome-popup.hide {
+            top: -100px;
+            opacity: 0;
+        }
+
+        .like-btn {
+            text-decoration: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            border: none !important;
+            background: transparent !important;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-left: 1rem;
+            cursor: pointer;
+        }
+
+        .like-count {
+            font-size: 1.3rem;
+            margin-left: 0.2rem;
+        }
+
+        .post-meta .author-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .category-card {
+            border: none;
+            border-radius: 20px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.08));
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            color: #2c3e50;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+
+        .category-card:hover i,
+        .category-card:hover h5,
+        .category-card:hover p {
+            color: white !important;
+        }
+
+        .category-card i {
+            transition: color 0.3s ease;
+        }
+
+        .category-card h5 {
+            font-weight: 600;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+        }
+
+        .category-card p {
+            font-size: 0.9rem;
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/"><i class="fas fa-blog"></i> BlogSphere</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#posts">Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Search Icon -->
+                    <a href="/search" class="btn btn-link" aria-label="Search">
+                        <i class="fas fa-search fa-lg"></i>
+                    </a>
+                    <!-- Notification Icon -->
+                    <button type="button" class="btn btn-link position-relative dropdown-toggle"
+                        id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false"
+                        aria-label="Notifications">
+                        <i class="fas fa-bell fa-lg"></i>
+                        <% if (user && user.notifications && user.notifications.filter(n=> !n.read).length > 0) { %>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                style="font-size:0.7rem;">
+                                <%= user.notifications.filter(n=> !n.read).length %>
+                            </span>
+                            <% } %>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="notificationDropdown"
+                        style="min-width: 300px; max-width: 350px; max-height: 350px; overflow-y: auto;">
+                        <% if (user && user.notifications && user.notifications.length> 0) { %>
+                            <% user.notifications.slice(-5).reverse().forEach(notification=> { %>
+                                <li class="dropdown-item <%= notification.read ? '' : 'fw-bold' %>">
+                                    <%= notification.text %>
+                                        <br>
+                                        <small class="text-muted">
+                                            <%= new Date(notification.createdAt).toLocaleString() %>
+                                        </small>
+                                </li>
+                                <% }) %>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><button class="dropdown-item text-center text-primary" id="markAllReadBtn">Mark
+                                            all as read</button></li>
+                                    <% } else { %>
+                                        <li class="dropdown-item text-muted">No notifications</li>
+                                        <% } %>
+                    </ul>
+                    <% if (typeof user !=='undefined' && user) { %>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i>
+                                <%= user.username %>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/user/dashboard"><i
+                                            class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                                <li><a class="dropdown-item" href="/user/profile"><i class="fas fa-user-cog"></i>
+                                        Profile</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/user/logout"><i class="fas fa-sign-out-alt"></i>
+                                        Logout</a></li>
+                            </ul>
+                        </div>
+                        <% } else { %>
+                            <a href="/user/login" class="btn btn-primary" style="margin-right: 5px;">Login</a>
+                            <a href="/user/signup" class="btn btn-primary">Sign Up</a>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="display-4 fw-bold mb-4">Share Your Stories with the World</h1>
+                        <p class="lead mb-4">Join our community of writers and readers. Discover amazing content, share
+                            your thoughts, and connect with like-minded people.</p>
+                        <div class="d-flex gap-3">
+                            <% if (typeof user !=='undefined' && user) { %>
+                                <a href="/user/dashboard" class="btn btn-primary btn-lg">Go to Dashboard</a>
+                                <% } else { %>
+                                    <a href="/user/login" class="btn btn-primary btn-lg">Start Writing</a>
+                                    <% } %>
+                                        <a href="#posts" class="btn btn-outline-light btn-lg">Explore Posts</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Welcome Message for Logged-in Users -->
+    <% if (typeof user !=='undefined' && user) { %>
+        <div id="welcome-popup" class="welcome-popup shadow">
+            <span>👋 Welcome back, <%= user.username %>!</span>
+        </div>
+        <% } %>
+
+
+            <!-- Featured Posts -->
+            <section class="featured-posts" id="posts">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Featured Posts</h2>
+                        <p>Discover the most popular and trending articles from our community</p>
+                    </div>
+
+                    <div class="row">
+                        <% if (typeof posts !=='undefined' && posts && posts.length> 0) { %>
+                            <% posts.forEach(post=> { %>
+                                <div class="col-lg-4 col-md-6 mb-4">
+                                    <div class="card blog-card h-100">
+                                        <img src="<%= post.image || '/images/default-post.jpg' %>" class="card-img-top"
+                                            alt="<%= post.title %>">
+                                        <div class="card-body d-flex flex-column">
+                                            <span class="category-badge">
+                                                <%= post.category || 'General' %>
+                                            </span>
+                                            <h5 class="card-title">
+                                                <%= post.title %>
+                                            </h5>
+                                            <p class="card-text text-muted">
+                                                <%= post.content ? (post.content.length> 120 ? post.content.substring(0,
+                                                    50) + '...' : post.content) : 'No content available' %>
+                                            </p>
+
+                                            <div class="post-meta mt-auto">
+                                                <div class="author-info">
+                                                    <img src="<%= post.author && post.author.profileImageURL ? post.author.profileImageURL : '/images/man-avatar.jpg' %>"
+                                                        alt="<%= post.author && post.author.username ? post.author.username : 'Unknown' %>"
+                                                        class="author-avatar"
+                                                        onerror="this.onerror=null;this.src='/images/man-avatar.jpg';">
+                                                    <span>
+                                                        <%= post.author && post.author.username ? post.author.username
+                                                            : 'Unknown Author' %>
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex gap-2 align-items-center">
+                                                    <button class="btn btn-link p-0 like-btn d-flex align-items-center"
+                                                        data-post-id="<%= post._id %>"
+                                                        data-logged-in="<%= user ? 'true' : 'false' %>"
+                                                        aria-label="Like post">
+                                                        <i class="fa fa-heart <%= post.likes && user && post.likes.includes(user._id) ? 'text-danger' : 'text-muted' %>"
+                                                            style="font-size: 1.3rem;"></i>
+                                                        <span class="like-count ms-1">
+                                                            <%= post.likes ? post.likes.length : 0 %>
+                                                        </span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="post-actions mt-3 d-flex gap-2 align-items-center">
+                                                <a href="/posts/<%= post._id %>" class="btn btn-sm btn-primary">Read
+                                                    More</a>
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <% }); %>
+                                    <% } else { %>
+                                        <div class="col-12">
+                                            <div class="empty-state">
+                                                <i class="fas fa-newspaper"></i>
+                                                <h4>No posts yet</h4>
+                                                <p class="text-muted">Be the first to share a story with our community!
+                                                </p>
+                                                <% if (typeof user !=='undefined' && user) { %>
+                                                    <a href="/user/dashboard" class="btn btn-primary">Create Your First
+                                                        Post</a>
+                                                    <% } else { %>
+                                                        <a href="/user/signup" class="btn btn-primary">Join and Start
+                                                            Writing</a>
+                                                        <% } %>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="/allposts" class="btn btn-primary">Show More</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <div class="stat-number">1,234</div>
+                                <p>Total Posts</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <div class="stat-number">5,678</div>
+                                <p>Active Writers</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-item">
+                                <div class="stat-number">89,012</div>
+                                <p>Total Views</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categories Section -->
+            <section class="py-5" id="categories">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Explore Categories</h2>
+                        <p>Find content that interests you</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 col-6 mb-4">
+                            <a href="/posts/category/Technology" style="text-decoration: none;">
+                                <div class="category-card text-center h-100">
+                                    <i class="fas fa-laptop-code fa-3x text-primary mb-3"></i>
+                                    <h5 class="card-title">Technology</h5>
+                                    <p class="card-text">Latest tech trends and insights</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-3 col-6 mb-4">
+                            <a href="/posts/category/Lifestyle" style="text-decoration: none;">
+                                <div class="category-card text-center h-100">
+                                    <i class="fas fa-heart fa-3x text-danger mb-3"></i>
+                                    <h5 class="card-title">Lifestyle</h5>
+                                    <p class="card-text">Health, wellness, and daily life</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-3 col-6 mb-4">
+                            <a href="/posts/category/Travel" style="text-decoration: none;">
+                                <div class="category-card text-center h-100">
+                                    <i class="fas fa-plane fa-3x text-info mb-3"></i>
+                                    <h5 class="card-title">Travel</h5>
+                                    <p class="card-text">Adventures and destinations</p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-3 col-6 mb-4">
+                            <a href="/posts/category/Food" style="text-decoration: none;">
+                                <div class="category-card text-center h-100">
+                                    <i class="fas fa-utensils fa-3x text-warning mb-3"></i>
+                                    <h5 class="card-title">Food</h5>
+                                    <p class="card-text">Recipes and culinary experiences</p>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h5><i class="fas fa-blog me-2"></i>BlogSphere</h5>
+                            <p>Share your stories, connect with writers, and discover amazing content from around the
+                                world.</p>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Quick Links</h5>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-light">About Us</a></li>
+                                <li><a href="#" class="text-light">Contact</a></li>
+                                <li><a href="#" class="text-light">Privacy Policy</a></li>
+                                <li><a href="#" class="text-light">Terms of Service</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h5>Connect With Us</h5>
+                            <div class="d-flex gap-3">
+                                <a href="#" class="text-light"><i class="fab fa-facebook fa-2x"></i></a>
+                                <a href="#" class="text-light"><i class="fab fa-twitter fa-2x"></i></a>
+                                <a href="#" class="text-light"><i class="fab fa-instagram fa-2x"></i></a>
+                                <a href="#" class="text-light"><i class="fab fa-linkedin fa-2x"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="text-center">
+                        <p>&copy; 2025 BlogSphere. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+            <script>
+                // Smooth scrolling for navigation links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+
+                // Navbar background change on scroll
+                window.addEventListener('scroll', function () {
+                    const navbar = document.querySelector('.navbar');
+                    if (window.scrollY > 50) {
+                        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                    } else {
+                        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                    }
+                });
+
+                // LikeUnlike functionality
+                function updateLikeUI(btn, liked, count) {
+                    const icon = btn.querySelector('i');
+                    const countSpan = btn.querySelector('.like-count');
+                    if (liked) {
+                        icon.classList.add('text-danger');
+                        icon.classList.remove('text-muted');
+                    } else {
+                        icon.classList.remove('text-danger');
+                        icon.classList.add('text-muted');
+                    }
+                    countSpan.textContent = count;
+                }
+                document.querySelectorAll('.like-btn').forEach(btn => {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        const postId = this.getAttribute('data-post-id');
+                        const isLoggedIn = this.dataset.loggedIn === "true";
+
+                        if (!isLoggedIn) {
+                            window.location.href = "/user/login";
+                            return;
+                        }
+                        fetch(`/posts/${postId}/like`, {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            }
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (typeof data.likes !== 'undefined') {
+                                    // Toggle liked state
+                                    const liked = this.querySelector('i').classList.contains('text-muted');
+                                    updateLikeUI(this, liked, data.likes);
+                                }
+                            });
+                    });
+                });
+
+                // Welcome popup logic
+                document.addEventListener('DOMContentLoaded', function () {
+                    const popup = document.getElementById('welcome-popup');
+                    if (popup) {
+                        // Only show if not already shown in this session
+                        if (!sessionStorage.getItem('welcomePopupShown')) {
+                            setTimeout(() => {
+                                popup.classList.add('show');
+                            }, 200);
+                            setTimeout(() => {
+                                popup.classList.remove('show');
+                                popup.classList.add('hide');
+                            }, 3700);
+                            popup.addEventListener('transitionend', function () {
+                                if (popup.classList.contains('hide')) {
+                                    popup.parentNode.removeChild(popup);
+                                }
+                            });
+                            // Mark as shown
+                            sessionStorage.setItem('welcomePopupShown', 'true');
+                        } else {
+                            // Remove the popup immediately if already shown
+                            popup.parentNode.removeChild(popup);
+                        }
+                    }
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var notificationDropdown = document.getElementById('notificationDropdown');
+                    var markAllReadBtn = document.getElementById('markAllReadBtn');
+
+                    if (notificationDropdown) {
+                        // Only prevent default if it's a link and causes navigation
+                        notificationDropdown.addEventListener('click', function (e) {
+                            e.preventDefault(); // Optional – remove if unnecessary
+                        });
+
+                        // When dropdown is shown, mark notifications as read
+                        notificationDropdown.addEventListener('show.bs.dropdown', function () {
+                            fetch('/user/notifications/mark-all-read', { method: 'POST' })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        // Optional: remove badge or update UI instead of reload
+                                        const badge = document.getElementById('notificationBadge');
+                                        if (badge) badge.remove(); // Hides the unread count badge
+                                        // Do not reload the page
+                                    }
+                                });
+                        });
+                    }
+
+                    if (markAllReadBtn) {
+                        markAllReadBtn.addEventListener('click', function (e) {
+                            e.preventDefault();
+                            fetch('/user/notifications/mark-all-read', { method: 'POST' })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        location.reload(); // Only reload when clicking this button
+                                    }
+                                });
+                        });
+                    }
+                });
+
+            </script>
+</body>
+
+</html>

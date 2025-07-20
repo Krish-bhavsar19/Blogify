@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results - BlogSphere</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --accent-color: #f093fb;
+      --success-color: #28a745;
+      --warning-color: #ffc107;
+      --danger-color: #dc3545;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary-color) !important;
+    }
+
+    .main-section {
+      position: relative;
+      padding: 120px 0 60px;
+      min-height: 100vh;
+    }
+
+    .search-header {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .search-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .search-subtitle {
+      color: #6c757d;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .search-form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .search-input {
+      border-radius: 25px;
+      border: 2px solid #e9ecef;
+      padding: 15px 25px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .search-btn {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      padding: 15px 30px;
+      border-radius: 25px;
+      color: white;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .results-section {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .results-count {
+      color: #6c757d;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .post-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .post-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .post-image {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .post-content {
+      padding: 25px;
+    }
+
+    .post-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 15px;
+      line-height: 1.3;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .author-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .category-badge {
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .read-more-btn {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .read-more-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      color: white;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6c757d;
+    }
+
+    .back-btn {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      padding: 10px 25px;
+      border-radius: 25px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      color: white;
+    }
+
+    .no-results h4 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 50px 0 20px;
+      margin-top: 80px;
+    }
+
+    @media (max-width: 768px) {
+      .search-header {
+        padding: 30px 20px;
+      }
+
+      .search-title {
+        font-size: 2rem;
+      }
+
+      .results-section {
+        padding: 30px 20px;
+      }
+
+      .post-content {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .main-section {
+        padding: 100px 0 40px;
+      }
+
+      .search-title {
+        font-size: 1.8rem;
+      }
+
+      .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="/"><i class="fas fa-blog"></i> BlogSphere</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        </ul>
+        <div class="d-flex">
+          <% if (typeof user !=='undefined' && user) { %>
+            <div class="dropdown">
+              <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-user"></i>
+                <%= user.username %>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/user/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                </li>
+                <li><a class="dropdown-item" href="/user/profile"><i class="fas fa-user-cog"></i>
+                    Profile</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="/user/logout"><i class="fas fa-sign-out-alt"></i>
+                    Logout</a></li>
+              </ul>
+            </div>
+            <% } else { %>
+              <a href="/user/login" class="btn btn-primary" style="margin-right: 5px;">Login</a>
+              <a href="/user/signup" class="btn btn-primary">Sign Up</a>
+              <% } %>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Section -->
+  <section class="main-section">
+
+    <div class="floating-shapes">
+      <div class="shape"></div>
+      <div class="shape"></div>
+      <div class="shape"></div>
+    </div>
+
+    <div class="container">
+
+      <div class="search-header">
+        <div class="text-center">
+          <h1 class="search-title">
+            <i class="fas fa-search me-3"></i>Search Results
+          </h1>
+          <p class="search-subtitle">Discover amazing content from our community</p>
+
+          <form action="/search" method="GET" class="search-form">
+            <div class="input-group">
+              <input type="text" class="form-control search-input" name="q" value="<%= query %>"
+                placeholder="Search for posts, authors, or categories...">
+              <button type="submit" class="btn search-btn">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="results-section">
+        <div class="results-count">
+          <% if (posts && posts.length> 0) { %>
+            Found <strong>
+              <%= posts.length %>
+            </strong> result<%= posts.length===1 ? '' : 's' %> for "<%= query %>"
+                <% } else { %>
+                  No results found for "<%= query %>"
+                    <% } %>
+        </div>
+
+        <% if (posts && posts.length> 0) { %>
+          <div class="row">
+            <% posts.forEach(post=> { %>
+              <div class="col-lg-6 col-md-6 mb-4">
+                <div class="card post-card">
+                  <img src="<%= post.image || '/images/default-post.jpg' %>" class="post-image" alt="<%= post.title %>"
+                    onerror="this.onerror=null;this.src='/images/default-post.jpg';">
+                  <div class="post-content">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                      <span class="category-badge">
+                        <%= post.category || 'General' %>
+                      </span>
+                      <small class="text-muted">
+                        <%= new Date(post.createdAt).toLocaleDateString() %>
+                      </small>
+                    </div>
+
+                    <h5 class="post-title">
+                      <%= post.title %>
+                    </h5>
+
+                    <div class="post-meta">
+                      <div class="author-info">
+                        <img
+                          src="<%= post.author && post.author.profileImageURL ? post.author.profileImageURL : '/images/man-avatar.jpg' %>"
+                          alt="<%= post.author && post.author.username ? post.author.username : 'Unknown' %>"
+                          class="author-avatar" onerror="this.onerror=null;this.src='/images/man-avatar.jpg';">
+                        <span>
+                          <%= post.author && post.author.username ? post.author.username : 'Unknown Author' %>
+                        </span>
+                      </div>
+                    </div>
+
+                    <a href="/posts/<%= post._id %>" class="read-more-btn">
+                      <i class="fas fa-arrow-right fa-sm me-2"></i>Read More
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+          </div>
+          <% } else { %>
+            <div class="no-results">
+              <i class="fas fa-search"></i>
+              <h4>No posts found</h4>
+              <p>Try searching with different keywords or browse our categories</p>
+              <a href="/" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Home
+              </a>
+            </div>
+            <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5><i class="fas fa-blog me-2"></i>BlogSphere</h5>
+          <p>Share your stories, connect with writers, and discover amazing content from around the world.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light">About Us</a></li>
+            <li><a href="#" class="text-light">Contact</a></li>
+            <li><a href="#" class="text-light">Privacy Policy</a></li>
+            <li><a href="#" class="text-light">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Connect With Us</h5>
+          <div class="d-flex gap-3">
+            <a href="#" class="text-light"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-twitter fa-2x"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="#" class="text-light"><i class="fab fa-linkedin fa-2x"></i></a>
+          </div>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>&copy; 2025 BlogSphere. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Navbar background change on scroll
+    window.addEventListener('scroll', function () {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+      } else {
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+      }
+    });
+
+    // Add animation to elements when they come into view
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe elements for animation
+    document.addEventListener('DOMContentLoaded', function () {
+      const animatedElements = document.querySelectorAll('.search-header, .results-section, .post-card');
+
+      animatedElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+
+</html>
