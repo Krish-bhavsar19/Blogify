@@ -159,11 +159,38 @@ router
   })
 
   //read More
-  .get('/:id', requireauth, async (req, res) => {
+  .get('/:id', async (req, res) => {
+
+    // const token = req.cookies.uid;
+    // const userData = getUser(token);
+
     let post = await Post.findById(req.params.id).populate('author');
     if (!post) {
       return res.status(404).send('Post not found');
     }
+
+
+    // let shouldIncrement = true;
+    // if (req.user) {
+    //   const user = await user.findById(userData._id);
+    //   if (!user) {
+    //     return res.status(404).send('User not found');
+    //   }
+    //   if (user.viewedPosts && user.viewedPosts.includes(req.params.id)) {
+    //     shouldIncrement = false;
+    //   } else {
+    //     user.viewedPosts = user.viewedPosts || [];
+    //     user.viewedPosts.push(req.params.id);
+    //     await user.save();  
+    //   }
+    // }
+
+    // if (shouldIncrement) {
+    //   post.views = (post.views || 0) + 1;
+    //   await post.save();
+    // }
+
+
     const commentAuthors = await user.find({ _id: { $in: post.comments.map(c => c.author) } });
     const authorMap = {};
     commentAuthors.forEach(u => {
@@ -291,9 +318,9 @@ router.get("/allpost", async (req, res) => {
     let currentUser = null;
 
     if (token) {
-      const userData = getUser(token); 
+      const userData = getUser(token);
       if (userData) {
-        currentUser = await user.findById(userData._id); 
+        currentUser = await user.findById(userData._id);
       }
     }
 
@@ -324,6 +351,64 @@ router.get("/allpost", async (req, res) => {
   }
 });
 
+//views
+
+router.get('/posts/:postId/views', requireauth, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const post = await Post.findById(postId).populate('viewedPosts');
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    let shouldIncrement = true;
+
+    if (req.user) {
+      // Authenticated user: check if they've viewed the post
+      const user = await user.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      if (user.viewedPosts.includes(postId)) {
+        shouldIncrement = false;
+      } else {
+        // Add post to user's viewedPosts and increment view count
+        user.viewedPosts.push(postId);
+        await user.save();
+      }
+    } else {
+      // Anonymous user: use a temporary in-memory cache or skip unique tracking
+      // For simplicity, we'll allow anonymous views to increment each time
+      // Alternatively, you could use a client-side cookie or IP-based tracking
+    }
+
+    if (shouldIncrement) {
+      post.views = (post.views || 0) + 1;
+      await post.save();
+    }
+
+    res.json({ views: post.views });
+  } catch (error) {
+    console.error('Error updating view count:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Route to get view status (optional, for consistency with like-status)
+router.get('/posts/:postId/view-status', async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId).populate('viewedPosts');
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    res.json({ views: post.views || 0 });
+  } catch (error) {
+    console.error('Error fetching view status:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 
 module.exports = router;
