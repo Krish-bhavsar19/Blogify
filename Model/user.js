@@ -39,6 +39,7 @@ const userSchema = new Schema({
       createdAt: { type: Date, default: Date.now }
     }
   ],
+  viewedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
 }, { timestamps: true });
 
 userSchema.static("matchPassword", async function(email, password) {
