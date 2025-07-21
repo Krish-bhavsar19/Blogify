@@ -373,7 +373,7 @@
                             <% } %>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="notificationDropdown"
-                        style="min-width: 300px; max-width: 350px; max-height: 350px; overflow-y: auto;">
+                        style="min-width: 300px; max-width: 350px; max-height: 350px; overflow-y: auto; margin-right: 50px;">
                         <% if (user && user.notifications && user.notifications.length> 0) { %>
                             <% user.notifications.slice(-5).reverse().forEach(notification=> { %>
                                 <li class="dropdown-item <%= notification.read ? '' : 'fw-bold' %>">
