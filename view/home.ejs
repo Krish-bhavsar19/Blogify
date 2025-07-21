@@ -421,6 +421,7 @@
             color: #6c757d;
             transition: color 0.3s ease;
         }
+
     </style>
 </head>
 
@@ -447,6 +448,8 @@
                         <a class="nav-link" href="#about">About</a>
                     </li>
                 </ul>
+               
+
                 <div class="d-flex align-items-center gap-3">
                     <!-- Search Icon -->
                     <a href="/search" class="btn btn-link" aria-label="Search">
@@ -466,7 +469,7 @@
                             <% } %>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="notificationDropdown"
-                        style="min-width: 300px; max-width: 350px; max-height: 350px; overflow-y: auto;">
+                        style="min-width: 300px; max-width: 350px; max-height: 350px; overflow-y: auto; margin-right: 60px;">
                         <% if (user && user.notifications && user.notifications.length> 0) { %>
                             <% user.notifications.slice(-5).reverse().forEach(notification=> { %>
                                 <li class="dropdown-item <%= notification.read ? '' : 'fw-bold' %>">
