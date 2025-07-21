@@ -95,11 +95,13 @@ router
 
       const totalPosts = posts.length;
       const totalLikes = posts.reduce((sum, post) => sum + (post.likes?.length || 0), 0);
+      const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
       res.render("dashboard", {
         user: currentUser,
         posts: posts,
         totalPosts,
-        totalLikes
+        totalLikes,
+        totalViews 
       });
     } catch (err) {
       res.redirect("/user/login");
