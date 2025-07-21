@@ -66,10 +66,17 @@
             padding: 25px;
             margin-bottom: 20px;
             transition: transform 0.3s ease;
+            min-height: 120px; /* Consistent height */
+            display: flex;
+            align-items: center;
         }
 
         .stats-card:hover {
             transform: translateY(-5px);
+        }
+
+        .stats-card .icon {
+            font-size: 2rem;
         }
 
         .post-card {
@@ -141,13 +148,47 @@
             margin-bottom: 15px;
         }
 
-        .like-btn {
+        .like-btn, .view-btn {
             text-decoration: none !important;
         }
 
-        .like-count {
+        .like-count, .view-count {
             font-size: 1.3rem;
             margin-left: 0.2rem;
+        }
+
+        .btn-read-more {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 6px 12px;
+            border-radius: 25px;
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-read-more:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stats-card {
+                min-height: 100px;
+                padding: 20px;
+            }
+
+            .stats-card .icon {
+                font-size: 1.5rem;
+            }
+
+            .btn-read-more, .btn-outline-primary, .btn-outline-danger {
+                padding: 5px 10px;
+                font-size: 0.85rem;
+                
+            }
         }
     </style>
 </head>
@@ -204,9 +245,6 @@
                             <h5>
                                 <%= user.username %>
                             </h5>
-                            <!-- <span class="badge bg-primary">
-                                <%= user.role %>
-                            </span> -->
                         </div>
 
                         <nav class="nav flex-column">
@@ -235,42 +273,42 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="stats-card">
-                                    <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center w-100">
                                         <div>
                                             <h4 class="mb-0">
                                                 <%= totalPosts %>
                                             </h4>
                                             <small>Total Posts</small>
                                         </div>
-                                        <i class="fas fa-file-alt fa-2x"></i>
+                                        <i class="fas fa-file-alt icon"></i>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- <div class="col-md-4">
+                            <div class="col-md-4">
                                 <div class="stats-card">
-                                    <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center w-100">
                                         <div>
                                             <h4 class="mb-0">
-                                                
+                                                <%= totalViews%>
                                             </h4>
                                             <small>Total Views</small>
                                         </div>
-                                        <i class="fas fa-eye fa-2x"></i>
+                                        <i class="fas fa-eye icon"></i>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
 
                             <div class="col-md-4">
                                 <div class="stats-card">
-                                    <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center w-100">
                                         <div>
                                             <h4 class="mb-0">
                                                 <%= totalLikes %>
                                             </h4>
                                             <small>Total Likes</small>
                                         </div>
-                                        <i class="fas fa-heart fa-2x"></i>
+                                        <i class="fas fa-heart icon"></i>
                                     </div>
                                 </div>
                             </div>
@@ -338,7 +376,6 @@
                                 </form>
                     </div>
 
-
                     <!-- My Posts Section -->
                     <div class="main-content" id="posts">
                         <h3 class="mb-4"><i class="fas fa-file-alt me-2"></i>My Posts</h3>
@@ -375,8 +412,17 @@
                                                                 <%= post.likes ? post.likes.length : 0 %>
                                                             </span>
                                                         </button>
+                                                        <span class="view-btn" aria-label="View count">
+                                                            <i class="fas fa-eye text-muted" style="font-size: 1.3rem;"></i>
+                                                            <span class="view-count">
+                                                                <%= post.views ? post.views : 0 %>
+                                                            </span>
+                                                        </span>
                                                     </div>
                                                     <div class="btn-group">
+                                                        <a href="/posts/<%= post._id %>" class="btn btn-sm btn-read-more">
+                                                            <i class="fas fa-book-open"></i> Read More
+                                                        </a>
                                                         <a href="/posts/<%= post._id %>/edit"
                                                             class="btn btn-sm btn-outline-primary">
                                                             <i class="fas fa-edit"></i>
