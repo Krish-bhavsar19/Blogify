@@ -1,3 +1,6 @@
+require('dotenv').config();
+
+const { connectmongo } = require("./connection");
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -7,11 +10,12 @@ const cookieParser=require('cookie-parser');
 const { checkAuth } = require("./middleware/auth");
 const staticRouter=require("./routes/staticRouter");
 const app = express();
-const port = 8000;
+
 const { user } = require('./Model/user');
 const { Post } = require('./Model/post');
 const { getUser } = require('./service/auth');
-require('dotenv').config();
+
+const PORT = process.env.PORT || 8000;
 
 const passport = require('passport');
 require('./config/passport');
@@ -23,9 +27,7 @@ app.get('/auth/google', passport.authenticate('google', {
   scope: ['profile', 'email']
 }));
 
-mongoose.connect("mongodb://127.0.0.1:27017/Blogify")
-  .then(() => console.log("MongoDB connected"))
-
+app.set("trust proxy", true);
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./view"));
 app.use((req, res, next) => {
@@ -79,5 +81,14 @@ app.use("/user", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/",staticRouter);
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+connectmongo(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB Atlas connected");
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection failed:", err);
+  });
 
