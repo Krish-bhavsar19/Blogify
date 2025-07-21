@@ -37,6 +37,7 @@ const postScema = new Schema({
     type: Boolean,
     default: true
   },
+  views: { type: Number, default: 0 },
   comments: [
     {
       text: { type: String, required: true },
