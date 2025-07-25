@@ -1,0 +1,528 @@
+:root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color) !important;
+        }
+
+        /* Floating Shapes */
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        /* Main Section */
+        .main-section {
+            position: relative;
+            padding: 120px 0 60px;
+            min-height: 100vh;
+        }
+
+        /* Post Card Layout */
+        .post-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .post-layout {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            min-height: 600px;
+        }
+
+        /* Left side - Image */
+        .post-image-section {
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+        }
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .category-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 3;
+        }
+
+        .category-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Right side - Content */
+        .post-content-section {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .post-content {
+            flex: 1;
+        }
+
+        .post-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .post-text {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        /* Footer Section */
+        .post-footer {
+            border-top: 1px solid #eee;
+            padding-top: 30px;
+        }
+
+        .author-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .author-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .post-date {
+            color: #6c757d;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .post-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .like-btn, .view-btn {
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            text-decoration: none !important;
+        }
+
+        .like-btn:hover, .view-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .like-btn i, .view-btn i {
+            font-size: 1.3rem;
+        }
+
+        .like-count, .view-count {
+            font-size: 1.1rem;
+        }
+
+        .comment-toggle-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comment-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .comments-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .comment-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-author {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .comment-text {
+            color: #555;
+        }
+
+        .no-comments {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .comment-form input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 12px 20px;
+            min-width: 200px;
+        }
+
+        .comment-form button {
+            border-radius: 25px;
+            padding: 12px 24px;
+        }
+
+        .login-prompt {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 50px 0 20px;
+            margin-top: 80px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .share-btn i {
+            margin-right: 4px;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .post-layout {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .post-image-section {
+                min-height: 400px;
+            }
+
+            .post-content-section {
+                padding: 30px;
+            }
+
+            .post-title {
+                font-size: 2rem;
+            }
+
+            .author-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .post-actions {
+                align-self: flex-start;
+            }
+
+            .comment-toggle-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .share-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .like-btn, .view-btn {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .post-content-section {
+                padding: 20px;
+            }
+
+            .post-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+
+            .post-text {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            .comment-form {
+                flex-direction: column;
+            }
+
+            .comment-form input {
+                min-width: 100%;
+            }
+
+            .comment-form button {
+                align-self: stretch;
+                padding: 10px 20px;
+            }
+
+            .comment-toggle-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .share-btn {
+                padding: 6px 14px;
+                font-size: 0.85rem;
+            }
+
+            .like-btn, .view-btn {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+            .post-image-section {
+                min-height: 300px;
+            }
+
+            .comments-section {
+                padding: 15px;
+            }
+
+            .comment-item {
+                padding: 10px;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-section {
+                padding: 100px 0 40px;
+            }
+
+            .post-card {
+                margin: 0 10px;
+            }
+
+            .post-title {
+                font-size: 1.6rem;
+            }
+
+            .post-text {
+                font-size: 1rem;
+            }
+
+            .comment-form input {
+                padding: 10px 15px;
+            }
+
+            .comment-form button {
+                padding: 8px 15px;
+            }
+
+            .comment-toggle-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .share-btn {
+                padding: 5px 12px;
+                font-size: 0.8rem;
+            }
+
+            .like-btn, .view-btn {
+                padding: 5px 8px;
+                font-size: 0.8rem;
+            }
+        }
