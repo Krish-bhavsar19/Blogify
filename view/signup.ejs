@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - BlogSphere</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/style/signup.css">
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    
+    <div class="signup-container">
+        <div class="signup-header">
+            <h2><i class="fas fa-blog me-2"></i>BlogSphere</h2>
+            <p class="mb-0">Join our community! Create your account to start sharing stories.</p>
+        </div>
+        
+        <div class="signup-body">
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i><%= error %>
+                </div>
+            <% } %>
+            
+            <form action="/user/signup" method="POST" id="signupForm">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+                            <label for="username"><i class="fas fa-user me-2"></i>Username</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                            <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                    <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+                </div>
+                
+                <div class="password-strength">
+                    <small class="text-muted">Password strength: <span id="strength-text">Weak</span></small>
+                    <div class="strength-bar">
+                        <div class="strength-fill strength-weak" id="strength-bar"></div>
+                    </div>
+                </div>
+                
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                    <label for="confirmPassword"><i class="fas fa-lock me-2"></i>Confirm Password</label>
+                </div>
+                
+                <div class="terms-check">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="terms" required>
+                        <label class="form-check-label" for="terms">
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="terms-check">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="newsletter">
+                        <label class="form-check-label" for="newsletter">
+                            Subscribe to our newsletter for updates and featured content
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-signup">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                </button>
+            </form>
+            
+            <div class="divider">
+                <span>or sign up with</span>
+            </div>
+            
+            <div class="social-signup">
+                <a href="/auth/google" class="btn-social">
+                    <i class="fab fa-google"></i>
+                </a>
+                <a href="#" class="btn-social">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="btn-social">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="btn-social">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            
+            <div class="login-link">
+                <p class="mb-0">Already have an account? <a href="/user/login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Password strength checker
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strength-bar');
+        const strengthText = document.getElementById('strength-text');
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            let feedback = '';
+            
+         
+            if (password.length >= 8) strength += 1;
+            
+            
+            if (/[a-z]/.test(password)) strength += 1;
+            
+           
+            if (/[A-Z]/.test(password)) strength += 1;
+            
+          
+            if (/[0-9]/.test(password)) strength += 1;
+            
+         
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+           
+            strengthBar.className = 'strength-fill';
+            
+            if (strength <= 1) {
+                strengthBar.classList.add('strength-weak');
+                feedback = 'Weak';
+            } else if (strength <= 2) {
+                strengthBar.classList.add('strength-medium');
+                feedback = 'Medium';
+            } else if (strength <= 3) {
+                strengthBar.classList.add('strength-strong');
+                feedback = 'Strong';
+            } else {
+                strengthBar.classList.add('strength-very-strong');
+                feedback = 'Very Strong';
+            }
+            
+            strengthText.textContent = feedback;
+        });
+        
+        // Password confirmation checker
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const signupForm = document.getElementById('signupForm');
+        
+        signupForm.addEventListener('submit', function(e) {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
